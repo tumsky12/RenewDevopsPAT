@@ -5,11 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace AccessTokenFunctionApp
 {
-    public class Function1
+    public class RenewPatFunction
     {
-        [FunctionName("Function1")]
+        [FunctionName("RenewPatFunction")]
         public void Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, ILogger log)
         {
+
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
     }
