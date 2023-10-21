@@ -16,6 +16,6 @@ variable "resource_environment" {
   }
 }
 
-variable "devops_organisation_name" {
-  description = "Name of devops organisation."
+variable "devops_organization_name" {
+  description = "Name of devops organization."
 }
