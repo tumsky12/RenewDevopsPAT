@@ -1,0 +1,6 @@
+stages:
+- template: PipelineTemplates/terraform-apply-template.yml@templates
+  parameters:
+    name: 'AccessTokenFunctionapp'
+    terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
+    backendAzureRmContainerName: 'pat-tf-storage'
