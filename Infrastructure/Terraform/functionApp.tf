@@ -10,7 +10,8 @@ resource "azurerm_windows_function_app" "wfa" {
   service_plan_id = azurerm_service_plan.sp.id
 
   app_settings = {
-    "PAT_KEY_VAULT_NAME" = module.kv.key_vault_name
+    "PAT_KEY_VAULT_NAME"       = module.kv.key_vault_name
+    "DEVOPS_ORGANIZATION_NAME" = var.devops_organization_name
   }
 
   identity {

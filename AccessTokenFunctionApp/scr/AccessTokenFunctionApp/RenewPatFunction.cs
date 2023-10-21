@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using AccessTokenFunctionApp.Infrastructure;
+using AccessTokenFunctionApp.Infrastructure.Interfaces;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AccessTokenFunctionApp;
@@ -10,15 +9,22 @@ namespace AccessTokenFunctionApp;
 public class RenewPatFunction
 {
     private readonly IPatKeyVault _patKeyVault;
-    public RenewPatFunction(IPatKeyVault patKeyVault, IConfiguration configuration)
+    private readonly IDevOpsPat _devOpsPat;
+    public RenewPatFunction(IPatKeyVault patKeyVault,
+        IDevOpsPat devOpsPat)
     {
         _patKeyVault = patKeyVault;
+        _devOpsPat = devOpsPat;
     }
 
     [FunctionName("RenewPatFunction")]
-    public async Task Run([TimerTrigger("*/5 * * * * *")] TimerInfo myTimer, ILogger log)
+    public async Task Run([TimerTrigger("* * */10 * * *")] TimerInfo myTimer, ILogger log)
     {
-        var secrets = await _patKeyVault.SetPatSecretAsync("test-token");
-        log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+        log.LogInformation($"RenewPatFunction executed at: {DateTime.Now}. Is past due: {myTimer.IsPastDue}");
+        var newPersonalAccessToken = await _devOpsPat.RenewPat();
+        if (newPersonalAccessToken != null)
+        {
+            await _patKeyVault.SetPatSecretAsync(newPersonalAccessToken);
+        }
     }
 }

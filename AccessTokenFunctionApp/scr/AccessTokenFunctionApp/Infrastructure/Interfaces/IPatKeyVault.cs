@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace AccessTokenFunctionApp.Infrastructure;
+namespace AccessTokenFunctionApp.Infrastructure.Interfaces;
 
 public interface IPatKeyVault
 {
