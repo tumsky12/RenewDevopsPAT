@@ -6,3 +6,9 @@ module "kv" {
   resource_name           = "kv-vm"
   resource_environment    = var.resource_environment
 }
+
+resource "azurerm_role_assignment" "ra_kv_admin_current" {
+  scope                = module.kv.key_vault_id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = azurerm_windows_function_app.wfa.identity[0].principal_id
+}

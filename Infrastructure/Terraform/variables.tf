@@ -15,3 +15,7 @@ variable "resource_environment" {
     error_message = "The environment must be either 'prod', 'stg' or 'dev'."
   }
 }
+
+variable "devops_organisation_name" {
+  description = "Name of devops organisation."
+}

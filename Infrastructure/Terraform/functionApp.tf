@@ -5,7 +5,18 @@ resource "azurerm_windows_function_app" "wfa" {
 
   storage_account_name       = module.sa.storage_account_name
   storage_account_access_key = module.sa.primary_access_key
-  service_plan_id            = azurerm_service_plan.sp.id
+  #storage_uses_managed_identity = true
+  #functions_extension_version = "~4"
+  service_plan_id = azurerm_service_plan.sp.id
+
+  app_settings = {
+    "PAT_KEY_VAULT_NAME"       = module.kv.key_vault_name
+    "DEVOPS_ORGANIZATION_NAME" = var.devops_organization_name
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   site_config {}
 }
