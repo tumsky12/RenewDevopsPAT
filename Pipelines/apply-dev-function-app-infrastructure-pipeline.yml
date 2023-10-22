@@ -21,7 +21,7 @@ jobs:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
   - checkout: modules
-  - powershell: cd $(System.DefaultWorkingDirectory)/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
+  - powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
 - template: apply-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
