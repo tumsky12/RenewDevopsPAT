@@ -18,10 +18,10 @@ variables:
 jobs:
 - job: 
   steps:
-  - script: echo $(System.DefaultWorkingDirectory)
+  #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
   - checkout: modules
-  - script: tree $(System.DefaultWorkingDirectory) /f
+  - powershell: Get-ChildItem -Path $(System.DefaultWorkingDirectory) -recurse
 # - template: apply-function-app-infrastructure-template.yml
 #   parameters:
 #     backendAzureRmContainerName: 'pat-tf-storage'
