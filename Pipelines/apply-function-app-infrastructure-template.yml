@@ -2,8 +2,10 @@ parameters:
 - name: backendAzureRmContainerName
 - name: environmentServiceName
 - name: backendAzureRmResourceGroupName
+- name: backendAzureRmResourceGroupLocation
 - name: backendAzureRmStorageAccountName
 - name: backendAzureRmKey
+  default: 'terraform.tfstate'
 - name: planCommandOptions
 
 jobs:
@@ -14,6 +16,9 @@ jobs:
     backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
     environmentServiceName: ${{ parameters.environmentServiceName }}
     backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+    backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
     backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
     backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
     planCommandOptions: ${{ parameters.planCommandOptions }}
+
+
