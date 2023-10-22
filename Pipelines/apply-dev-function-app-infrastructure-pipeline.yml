@@ -23,7 +23,8 @@ jobs:
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
     environmentServiceName: $(environmentServiceName)
-    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
-    backendAzureRmKey: $(devBackendAzureRmKey)
+    backendAzureRmResourceGroupName: 'terraform-dev'
+    backendAzureRmStorageAccountName: 'terraformdev8716912495'
+    backendAzureRmKey: 'terraform-dev'
     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+
