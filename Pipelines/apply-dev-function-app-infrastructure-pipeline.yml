@@ -29,7 +29,7 @@ jobs:
       backendType: azurerm
       workingDirectory: $(System.DefaultWorkingDirectory)/Infrastructure/Terraform
       backendServiceArm: $(environmentServiceName)
-      ensureBackend: true
+      #ensureBackend: true
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
       backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
