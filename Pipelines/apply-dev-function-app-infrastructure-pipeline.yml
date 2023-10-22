@@ -47,7 +47,7 @@ jobs:
     environmentServiceName: $(environmentServiceName)
     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-    backendAzureRmStorageAccountName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
 # - template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
