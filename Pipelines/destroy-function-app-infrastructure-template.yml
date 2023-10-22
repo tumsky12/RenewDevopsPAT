@@ -7,7 +7,7 @@ parameters:
 - name: planCommandOptions
 
 stages:
-- template: PipelineTemplates/terraform-destroy-template.yml@templates
+- template: PipelineTemplates/Jobs/Terraform/terraform-destroy-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
     terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
