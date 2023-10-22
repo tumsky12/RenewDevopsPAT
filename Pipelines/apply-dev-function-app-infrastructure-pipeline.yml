@@ -21,13 +21,13 @@ jobs:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
   - checkout: modules
-  - powershell: Get-ChildItem -Path $(System.DefaultWorkingDirectory) -recurse
-# - template: apply-function-app-infrastructure-template.yml
-#   parameters:
-#     backendAzureRmContainerName: 'pat-tf-storage'
-#     environmentServiceName: $(environmentServiceName)
-#     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-#     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-#     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
-#     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+  - powershell: cd $(System.DefaultWorkingDirectory)/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
+- template: apply-function-app-infrastructure-template.yml
+  parameters:
+    backendAzureRmContainerName: 'pat-tf-storage'
+    environmentServiceName: $(environmentServiceName)
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
