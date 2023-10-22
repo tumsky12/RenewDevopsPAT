@@ -13,7 +13,7 @@ variables:
 
 jobs:
 - job: foo
-  steps:
+  # steps:
 #   - script: echo $(environmentServiceName)
 #   - script: echo $(devBackendAzureRmResourceGroupName)
 #   - script: echo $(devBackendAzureRmStorageAccountName)
