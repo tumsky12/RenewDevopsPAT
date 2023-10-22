@@ -1,5 +1,5 @@
 module "kv" {
-  source                  = "C:\\agent\\_work\\1\\s\\CoreTerraformModules/Modules/KeyVault"
+  source                  = "C:/agent/_work/1/s/CoreTerraformModules/Modules/KeyVault"
   resource_group_location = azurerm_resource_group.rg.location
   resource_prefix         = var.resource_prefix
   resource_group_name     = azurerm_resource_group.rg.name
