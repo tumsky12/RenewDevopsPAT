@@ -7,6 +7,10 @@ resources:
       name: tumsky12/SharedInfrastructure
       endpoint: GitHubConnection
       ref:  'refs/heads/feature/terraform-pipeline-changes'
+    - repository: modules
+      type: github
+      name: tumsky12/CoreTerraformModules
+      endpoint: GitHubConnection
 
 variables:
 - group: shared-variable-group
