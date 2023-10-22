@@ -12,12 +12,34 @@ variables:
 - group: shared-variable-group
 
 jobs:
-# - job: foo
-#   steps:
+- job: foo
+  steps:
 #   - script: echo $(environmentServiceName)
 #   - script: echo $(devBackendAzureRmResourceGroupName)
 #   - script: echo $(devBackendAzureRmStorageAccountName)
 #   - script: echo $(devBackendAzureRmKey)
+  - task: TerraformCLI@1
+    displayName: 'terraform init'
+    inputs:
+      command: init
+      backendType: azurerm
+      # Service connection to authorize backend access. Supports Subscription & Management Group Scope
+      backendServiceArm: 'Workload Identity Federation Connection'
+      # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
+      # Service connection or to override the subscription id defined in a Subscription scoped service connection
+      backendAzureRmSubscriptionId: '19b03c4d-996a-4046-986e-e12c5b098db7'
+      # create backend storage account if doesn't exist
+      ensureBackend: true
+      backendAzureRmResourceGroupName: 'terraform-dev'
+      # azure location shortname of the backend resource group and storage account
+      backendAzureRmResourceGroupLocation: 'eastus'
+      backendAzureRmStorageAccountName: 'terraformdev8716912495'
+      # azure storage account sku, used when creating the storage account
+      backendAzureRmStorageAccountSku: 'Standard_RAGRS'
+      # azure blob container to store the state file
+      backendAzureRmContainerName: 'pat-tf-storage'
+      # azure blob file name
+      backendAzureRmKey: infrax.tfstate
 
 - template: apply-function-app-infrastructure-template.yml
   parameters:
