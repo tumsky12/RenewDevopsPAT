@@ -2,11 +2,11 @@ trigger: none
 
 resources:
   repositories:
-    - repository: templates
-      type: github
-      name: tumsky12/SharedInfrastructure
-      endpoint: GitHubConnection
-      ref:  'refs/heads/feature/terraform-pipeline-changes'
+    # - repository: templates
+    #   type: github
+    #   name: tumsky12/SharedInfrastructure
+    #   endpoint: GitHubConnection
+    #   ref:  'refs/heads/feature/terraform-pipeline-changes'
     - repository: modules
       type: github
       name: tumsky12/CoreTerraformModules
@@ -19,15 +19,30 @@ jobs:
 - job: 
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
-  - checkout: self
-  - checkout: modules
+  # - checkout: self
+  # - checkout: modules
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
-- template: apply-function-app-infrastructure-template.yml
-  parameters:
-    backendAzureRmContainerName: 'pat-tf-storage'
-    environmentServiceName: $(environmentServiceName)
-    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
-    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+  - task: TerraformCLI@1
+    displayName: 'Terraform Init ${{ parameters.name }}'
+    inputs:
+      command: init
+      backendType: azurerm
+      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+      backendServiceArm: $(environmentServiceName)
+      ensureBackend: true
+      backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+      backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+      backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+      backendAzureRmStorageAccountSku: 'Standard_RAGRS'
+      backendAzureRmContainerName: 'pat-tf-storage'
+      allowTelemetryCollection: true
+
+# - template: apply-function-app-infrastructure-template.yml
+#   parameters:
+#     backendAzureRmContainerName: 'pat-tf-storage'
+#     environmentServiceName: $(environmentServiceName)
+#     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+#     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+#     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+#     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
