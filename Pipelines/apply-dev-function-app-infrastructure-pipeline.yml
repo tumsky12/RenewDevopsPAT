@@ -18,35 +18,46 @@ jobs:
 #   - script: echo $(devBackendAzureRmResourceGroupName)
 #   - script: echo $(devBackendAzureRmStorageAccountName)
 #   - script: echo $(devBackendAzureRmKey)
-  - task: TerraformCLI@1
-    displayName: 'terraform init'
-    inputs:
-      command: init
-      backendType: azurerm
-      # Service connection to authorize backend access. Supports Subscription & Management Group Scope
-      backendServiceArm: 'Workload Identity Federation Connection'
-      # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
-      # Service connection or to override the subscription id defined in a Subscription scoped service connection
-      # backendAzureRmSubscriptionId: '19b03c4d-996a-4046-986e-e12c5b098db7'
-      # create backend storage account if doesn't exist
-      ensureBackend: true
-      backendAzureRmResourceGroupName: 'terraform-dev'
-      # azure location shortname of the backend resource group and storage account
-      backendAzureRmResourceGroupLocation: 'uksouth'
-      backendAzureRmStorageAccountName: 'terraformdev8716912495'
-      # azure storage account sku, used when creating the storage account
-      backendAzureRmStorageAccountSku: 'Standard_RAGRS'
-      # azure blob container to store the state file
-      backendAzureRmContainerName: 'pat-tf-storage'
-      # azure blob file name
-      backendAzureRmKey: infrax.tfstate
+#   - task: TerraformCLI@1
+#     displayName: 'terraform init'
+#     inputs:
+#       command: init
+#       backendType: azurerm
+#       # Service connection to authorize backend access. Supports Subscription & Management Group Scope
+#       backendServiceArm: 'Workload Identity Federation Connection'
+#       # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
+#       # Service connection or to override the subscription id defined in a Subscription scoped service connection
+#       # backendAzureRmSubscriptionId: '19b03c4d-996a-4046-986e-e12c5b098db7'
+#       # create backend storage account if doesn't exist
+#       ensureBackend: true
+#       backendAzureRmResourceGroupName: 'terraform-dev'
+#       # azure location shortname of the backend resource group and storage account
+#       backendAzureRmResourceGroupLocation: 'uksouth'
+#       backendAzureRmStorageAccountName: 'terraformdev8716912495'
+#       # azure storage account sku, used when creating the storage account
+#       backendAzureRmStorageAccountSku: 'Standard_RAGRS'
+#       # azure blob container to store the state file
+#       backendAzureRmContainerName: 'pat-tf-storage'
+#       # azure blob file name
+#       backendAzureRmKey: infrax.tfstate
 
-- template: apply-function-app-infrastructure-template.yml
+# - template: apply-function-app-infrastructure-template.yml
+#   parameters:
+#     backendAzureRmContainerName: 'pat-tf-storage'
+#     environmentServiceName: $(environmentServiceName)
+#     backendAzureRmResourceGroupName: 'terraform-dev'
+#     backendAzureRmStorageAccountName: 'terraformdev8716912495'
+#     backendAzureRmKey: 'terraform-dev'
+#     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+
+- template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
   parameters:
-    backendAzureRmContainerName: 'pat-tf-storage'
-    environmentServiceName: $(environmentServiceName)
-    backendAzureRmResourceGroupName: 'terraform-dev'
-    backendAzureRmStorageAccountName: 'terraformdev8716912495'
-    backendAzureRmKey: 'terraform-dev'
-    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+    - name: 'AccessTokenFunctionapp'
+    - terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
+    - backendAzureRmContainerName: 'pat-tf-storage'
+    - environmentServiceName: 'Workload Identity Federation Connection'
+    - backendAzureRmResourceGroupName: 'terraform-dev'
+    - backendAzureRmResourceGroupLocation: 'uksouth'
+    - backendAzureRmStorageAccountName: 'terraformdev8716912495'
+    - planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
