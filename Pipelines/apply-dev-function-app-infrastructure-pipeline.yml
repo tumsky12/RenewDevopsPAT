@@ -44,10 +44,10 @@ jobs:
 - template: apply-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
-    environmentServiceName: 'Workload Identity Federation Connection'
-    backendAzureRmResourceGroupName: 'terraform-dev'
-    backendAzureRmResourceGroupLocation: 'uksouth'
-    backendAzureRmStorageAccountName: 'terraformdev8716912495'
+    environmentServiceName: $(environmentServiceName)
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmResourceGroupName)
     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
 # - template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
