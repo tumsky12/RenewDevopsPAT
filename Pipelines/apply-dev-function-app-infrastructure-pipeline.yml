@@ -52,12 +52,12 @@ jobs:
 
 - template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
   parameters:
-    - name: 'AccessTokenFunctionapp'
-    - terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
-    - backendAzureRmContainerName: 'pat-tf-storage'
-    - environmentServiceName: 'Workload Identity Federation Connection'
-    - backendAzureRmResourceGroupName: 'terraform-dev'
-    - backendAzureRmResourceGroupLocation: 'uksouth'
-    - backendAzureRmStorageAccountName: 'terraformdev8716912495'
-    - planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
+    name: 'AccessTokenFunctionapp'
+    terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
+    backendAzureRmContainerName: 'pat-tf-storage'
+    environmentServiceName: 'Workload Identity Federation Connection'
+    backendAzureRmResourceGroupName: 'terraform-dev'
+    backendAzureRmResourceGroupLocation: 'uksouth'
+    backendAzureRmStorageAccountName: 'terraformdev8716912495'
+    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
