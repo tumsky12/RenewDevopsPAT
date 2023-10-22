@@ -6,7 +6,7 @@ resources:
       type: github
       name: tumsky12/SharedInfrastructure
       endpoint: GitHubConnection
-      ref:  'refs/heads/terraform-pipelines-changes'
+      ref:  'refs/heads/feature/terraform-pipeline-changes'
 
 variables:
 - group: shared-variable-group
