@@ -1,6 +1,19 @@
+parameters:
+- name: backendAzureRmContainerName
+- name: environmentServiceName
+- name: backendAzureRmResourceGroupName
+- name: backendAzureRmStorageAccountName
+- name: backendAzureRmKey
+- name: planCommandOptions
+
 stages:
 - template: PipelineTemplates/terraform-destroy-template.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
     terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
-    backendAzureRmContainerName: 'pat-tf-storage'
+    backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+    environmentServiceName: ${{ parameters.environmentServiceName }}
+    backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+    backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
+    planCommandOptions: ${{ parameters.planCommandOptions }}

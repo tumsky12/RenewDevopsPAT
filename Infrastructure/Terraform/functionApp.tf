@@ -12,6 +12,8 @@ resource "azurerm_windows_function_app" "wfa" {
   app_settings = {
     "PAT_KEY_VAULT_NAME"       = module.kv.key_vault_name
     "DEVOPS_ORGANIZATION_NAME" = var.devops_organization_name
+    "DEVOPS_TOKEN_SCOPES"      = var.devops_token_scopes
+    "DEVOPS_TOKEN_ALL_ORGS"    = var.devops_token_all_orgs
   }
 
   identity {

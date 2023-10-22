@@ -9,13 +9,24 @@ variable "resource_prefix" {
 }
 
 variable "resource_environment" {
-  default = "prod"
+  default = "dev"
   validation {
-    condition     = contains(["prod", "stg", "dev"], var.resource_environment)
-    error_message = "The environment must be either 'prod', 'stg' or 'dev'."
+    condition     = contains(["prd", "stg", "dev"], var.resource_environment)
+    error_message = "The environment must be either 'prd', 'stg' or 'dev'."
   }
 }
 
 variable "devops_organization_name" {
   description = "Name of devops organization."
+}
+
+variable "devops_token_scopes" {
+  default     = "app_token"
+  description = "The token scopes for accessing Azure DevOps resources."
+}
+
+variable "devops_token_all_orgs" {
+  default     = true
+  type        = bool
+  description = "Should the new pat be valid for all accessible organizations."
 }
