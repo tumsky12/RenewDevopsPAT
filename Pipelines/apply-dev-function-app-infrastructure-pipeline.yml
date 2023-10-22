@@ -11,7 +11,7 @@ resources:
 variables:
 - group: shared-variable-group
 
-# jobs:
+jobs:
 # - job: foo
 #   steps:
 #   - script: echo $(environmentServiceName)
