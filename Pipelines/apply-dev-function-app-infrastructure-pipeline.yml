@@ -18,6 +18,7 @@ variables:
 jobs:
 - job: 
   steps:
+  - script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
   - checkout: modules
 - template: apply-function-app-infrastructure-template.yml
