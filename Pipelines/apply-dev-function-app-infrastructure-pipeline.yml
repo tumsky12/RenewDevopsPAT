@@ -11,10 +11,10 @@ resources:
 variables:
 - group: shared-variable-group
 
-jobs:
-- job: foo
-  steps:
-  - script: echo $(environmentServiceName)
+# jobs:
+# - job: foo
+#   steps:
+#   - script: echo $(environmentServiceName)
 
 - template: apply-function-app-infrastructure-template.yml
   parameters:
