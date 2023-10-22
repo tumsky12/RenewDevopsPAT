@@ -12,12 +12,12 @@ variables:
 - group: shared-variable-group
 
 jobs:
-- job: foo
-  steps:
-  - script: echo $(environmentServiceName)
-  - script: echo $(devBackendAzureRmResourceGroupName)
-  - script: echo $(devBackendAzureRmStorageAccountName)
-  - script: echo $(devBackendAzureRmKey)
+# - job: foo
+#   steps:
+#   - script: echo $(environmentServiceName)
+#   - script: echo $(devBackendAzureRmResourceGroupName)
+#   - script: echo $(devBackendAzureRmStorageAccountName)
+#   - script: echo $(devBackendAzureRmKey)
 
 - template: apply-function-app-infrastructure-template.yml
   parameters:
