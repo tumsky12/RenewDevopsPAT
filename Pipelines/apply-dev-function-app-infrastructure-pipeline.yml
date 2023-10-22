@@ -27,7 +27,7 @@ jobs:
       backendServiceArm: 'Workload Identity Federation Connection'
       # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
       # Service connection or to override the subscription id defined in a Subscription scoped service connection
-      backendAzureRmSubscriptionId: '19b03c4d-996a-4046-986e-e12c5b098db7'
+      # backendAzureRmSubscriptionId: '19b03c4d-996a-4046-986e-e12c5b098db7'
       # create backend storage account if doesn't exist
       ensureBackend: true
       backendAzureRmResourceGroupName: 'terraform-dev'
