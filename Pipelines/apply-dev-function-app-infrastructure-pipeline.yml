@@ -14,13 +14,13 @@ variables:
 jobs:
 - job: foo
   steps:
-  - script: echo ${environmentServiceName}
+  - script: echo $(environmentServiceName)
 
 - template: apply-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
-    environmentServiceName: 'Workload Identity Federation Connection'
-    backendAzureRmResourceGroupName: ${devBackendAzureRmResourceGroupName}
-    backendAzureRmStorageAccountName: ${devBackendAzureRmStorageAccountName}
-    backendAzureRmKey: ${devBackendAzureRmKey}
-    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=${organizationName}"'
+    environmentServiceName: $(environmentServiceName)
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+    backendAzureRmKey: $(devBackendAzureRmKey)
+    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
