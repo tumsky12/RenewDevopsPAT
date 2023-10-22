@@ -36,6 +36,7 @@ jobs:
       backendAzureRmStorageAccountSku: 'Standard_RAGRS'
       backendAzureRmContainerName: 'pat-tf-storage'
       allowTelemetryCollection: true
+      backendAzureRmKey: 'terraform.tfstate'
 
 # - template: apply-function-app-infrastructure-template.yml
 #   parameters:
