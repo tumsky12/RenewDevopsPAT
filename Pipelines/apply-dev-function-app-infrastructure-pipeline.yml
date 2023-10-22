@@ -16,6 +16,10 @@ variables:
 - group: shared-variable-group
 
 jobs:
+- job: 
+  steps:
+  - checkout: self
+  - checkout: modules
 - template: apply-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
