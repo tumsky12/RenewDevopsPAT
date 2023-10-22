@@ -32,7 +32,7 @@ jobs:
       ensureBackend: true
       backendAzureRmResourceGroupName: 'terraform-dev'
       # azure location shortname of the backend resource group and storage account
-      backendAzureRmResourceGroupLocation: 'eastus'
+      backendAzureRmResourceGroupLocation: 'uksouth'
       backendAzureRmStorageAccountName: 'terraformdev8716912495'
       # azure storage account sku, used when creating the storage account
       backendAzureRmStorageAccountSku: 'Standard_RAGRS'
