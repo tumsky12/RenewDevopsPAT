@@ -12,7 +12,7 @@ jobs:
 - template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
-    terraformWorkingDir: '$(System.DefaultWorkingDirectory)/Infrastructure/Terraform'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure/Terraform'
     backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
     environmentServiceName: ${{ parameters.environmentServiceName }}
     backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
