@@ -21,7 +21,7 @@ jobs:
   - script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
   - checkout: modules
-  - script: ls | echo
+  - script: tree $(Agent.WorkFolder)\1 /f
 - template: apply-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'
