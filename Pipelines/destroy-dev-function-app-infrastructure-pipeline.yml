@@ -11,7 +11,7 @@ resources:
 variables:
 - group: shared-variable-group
 
-stages:
+jobs:
 - template: destroy-function-app-infrastructure-template.yml
   parameters:
     backendAzureRmContainerName: 'pat-tf-storage'

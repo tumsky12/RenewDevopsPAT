@@ -6,7 +6,7 @@ parameters:
 - name: backendAzureRmKey
 - name: planCommandOptions
 
-stages:
+jobs:
 - template: PipelineTemplates/Jobs/Terraform/terraform-apply-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
