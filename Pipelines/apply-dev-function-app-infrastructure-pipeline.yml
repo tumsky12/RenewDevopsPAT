@@ -20,7 +20,7 @@ jobs:
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   # - checkout: self
-  # - checkout: modules
+  - checkout: modules
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
   - task: TerraformCLI@1
     displayName: 'Terraform Init'
