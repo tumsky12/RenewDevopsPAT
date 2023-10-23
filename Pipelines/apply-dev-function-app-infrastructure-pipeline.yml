@@ -25,8 +25,8 @@ jobs:
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   #- checkout: self
-  - checkout: self
-    path: ${projectFolder}
+  # - checkout: self
+  #   path: ${projectFolder}
   - checkout: modules
     path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
