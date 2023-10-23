@@ -28,7 +28,7 @@ jobs:
     inputs:
       command: init
       backendType: azurerm
-      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/Infrastructure/Terraform
       backendServiceArm: $(environmentServiceName)
       #ensureBackend: true
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
