@@ -20,7 +20,8 @@ jobs:
 - job: 
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
-  #- checkout: self
+  - checkout: self
+  - checkout: self
   - checkout: modules
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
   - task: TerraformCLI@1
@@ -28,7 +29,7 @@ jobs:
     inputs:
       command: init
       backendType: azurerm
-      workingDirectory: $(System.DefaultWorkingDirectory)/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
       backendServiceArm: $(environmentServiceName)
       #ensureBackend: true
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
