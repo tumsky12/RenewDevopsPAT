@@ -24,27 +24,26 @@ jobs:
 - job: 
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
-  #- checkout: self
-  # - checkout: self
-  #   path: ${projectFolder}
+  - checkout: self
+    path: ${projectFolder}
   - checkout: modules
     path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
-  - task: TerraformCLI@1
-    displayName: 'Terraform Init'
-    inputs:
-      command: init
-      backendType: azurerm
-      workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
-      backendServiceArm: $(environmentServiceName)
-      #ensureBackend: true
-      backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-      backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-      backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
-      backendAzureRmStorageAccountSku: 'Standard_RAGRS'
-      backendAzureRmContainerName: 'pat-tf-storage'
-      allowTelemetryCollection: true
-      backendAzureRmKey: 'terraform.tfstate'
+  # - task: TerraformCLI@1
+  #   displayName: 'Terraform Init'
+  #   inputs:
+  #     command: init
+  #     backendType: azurerm
+  #     workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
+  #     backendServiceArm: $(environmentServiceName)
+  #     ensureBackend: true
+  #     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+  #     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+  #     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+  #     backendAzureRmStorageAccountSku: 'Standard_RAGRS'
+  #     backendAzureRmContainerName: 'pat-tf-storage'
+  #     allowTelemetryCollection: true
+  #     backendAzureRmKey: 'terraform.tfstate'
 
 # - template: apply-function-app-infrastructure-template.yml
 #   parameters:
@@ -55,3 +54,25 @@ jobs:
 #     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
 #     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
+  - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+    parameters:
+      name: 'AccessTokenFunctionapp'
+      workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
+      environmentServiceName: $(environmentServiceName)
+      backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+      backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+      backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
+      backendAzureRmContainerName: 'pat-tf-storage'
+      backendAzureRmKey: 'terraform.tfstate'
+      
+  # - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+  #   parameters:
+  #     name: 'AccessTokenFunctionapp'
+  #     workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure/Terraform'
+  #     environmentServiceName: ${{ parameters.environmentServiceName }}
+  #     backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+  #     backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
+  #     backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+  #     backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+  #     backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
+      
