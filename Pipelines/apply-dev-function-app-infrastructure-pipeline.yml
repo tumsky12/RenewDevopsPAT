@@ -54,16 +54,16 @@ jobs:
 #     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
 #     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
-- template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
-  parameters:
-    name: 'AccessTokenFunctionapp'
-    workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
-    environmentServiceName: $(environmentServiceName)
-    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-    backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
-    backendAzureRmContainerName: 'pat-tf-storage'
-    backendAzureRmKey: 'terraform.tfstate'
+    - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+      parameters:
+        name: 'AccessTokenFunctionapp'
+        workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
+        environmentServiceName: $(environmentServiceName)
+        backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+        backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+        backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
+        backendAzureRmContainerName: 'pat-tf-storage'
+        backendAzureRmKey: 'terraform.tfstate'
       
   # - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
   #   parameters:
