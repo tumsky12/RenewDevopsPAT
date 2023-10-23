@@ -54,7 +54,7 @@ jobs:
 #     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
 #     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
 
-  - template: Templates/Steps/Terraform/terraform-init-step@templates
+  - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
     parameters:
       name: 'AccessTokenFunctionapp'
       workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
