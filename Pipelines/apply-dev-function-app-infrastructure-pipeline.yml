@@ -25,16 +25,16 @@ jobs:
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
-    path: $(projectFolder)
+    # path: $(projectFolder)
   - checkout: modules
-    path: $(coreTerraformModulesFolder)
+    # path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
   - task: TerraformCLI@1
     displayName: 'Terraform Init'
     inputs:
       command: init
       backendType: azurerm
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(projectFolder)/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
       backendServiceArm: $(environmentServiceName)
       #ensureBackend: true
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
