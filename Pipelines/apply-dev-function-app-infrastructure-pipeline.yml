@@ -15,6 +15,10 @@ resources:
 
 variables:
 - group: shared-variable-group
+- name: projectFolder
+  value: RenewDevopsPAT
+- name: coreTerraformModulesFolder
+  value: CoreTerraformModules
 
 jobs:
 - job: 
@@ -22,14 +26,16 @@ jobs:
   #- script: echo $(System.DefaultWorkingDirectory)
   #- checkout: self
   - checkout: self
+    path: ${projectFolder}
   - checkout: modules
+    path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
   - task: TerraformCLI@1
     displayName: 'Terraform Init'
     inputs:
       command: init
       backendType: azurerm
-      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/${projectFolder}/Infrastructure/Terraform
       backendServiceArm: $(environmentServiceName)
       #ensureBackend: true
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
