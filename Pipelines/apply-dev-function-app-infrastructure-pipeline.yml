@@ -17,7 +17,19 @@ variables:
 - group: shared-variable-group
 
 jobs:
-- template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+# - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+#   parameters:
+#     name: 'AccessTokenFunctionapp'
+#     workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+#     environmentServiceName: $(environmentServiceName)
+#     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+#     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+#     backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
+#     backendAzureRmContainerName: 'pat-tf-storage'
+#     backendAzureRmKey: 'terraform.tfstate'
+#     planCommandOptions: '-var-file="Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
+
+- template: Templates/Jobs/Terraform/terraform-destroy-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
     workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
