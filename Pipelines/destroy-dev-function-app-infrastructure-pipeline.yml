@@ -6,12 +6,10 @@ resources:
       type: github
       name: tumsky12/CorePipelineTemplates
       endpoint: GitHubConnection
-      ref:  'refs/heads/feature/terraform-pipeline-changes'
     - repository: terraformModules
       type: github
       name: tumsky12/CoreTerraformModules
       endpoint: GitHubConnection
-      ref:  'refs/heads/feature/terraform-pipeline-changes'
 
 variables:
 - group: shared-variable-group
