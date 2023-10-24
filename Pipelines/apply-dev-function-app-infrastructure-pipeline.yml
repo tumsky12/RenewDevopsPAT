@@ -40,7 +40,7 @@ jobs:
       name: 'AccessTokenFunctionapp'
       workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
       environmentServiceName: $(environmentServiceName)
-      planCommandOptions: '-var-file="Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
+      planCommandOptions: '-var-file="$(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform/Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
 
   # - task: TerraformCLI@1
   #   displayName: 'Terraform Init'
