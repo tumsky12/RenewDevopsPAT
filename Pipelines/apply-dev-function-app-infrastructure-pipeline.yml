@@ -27,9 +27,9 @@ jobs:
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
-    path: $(Pipeline.Workspace)/$(projectFolder)
+    path: $(projectFolder)
   - checkout: modules
-    # path: $(coreTerraformModulesFolder)
+    path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
 
   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
