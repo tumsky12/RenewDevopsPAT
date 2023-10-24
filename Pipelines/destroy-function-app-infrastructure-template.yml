@@ -6,7 +6,7 @@ parameters:
 jobs:
 - template: Templates/Jobs/Terraform/terraform-destroy-job.yml@templates
   parameters:
-    name: 'AccessTokenFunctionapp'
+    name: 'AccessTokenFunctionApp'
     workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
     environmentServiceName: $(environmentServiceName)
     backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
