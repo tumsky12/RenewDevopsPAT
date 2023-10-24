@@ -15,35 +15,27 @@ resources:
 
 variables:
 - group: shared-variable-group
-- name: projectFolder
-  value: RenewDevopsPAT
+# - name: projectFolder
+#   value: RenewDevopsPAT
 - name: coreTerraformModulesFolder
   value: CoreTerraformModules
+- name: projectFolder
+  value: RenewDevopsPAT   
 
 jobs:
 - job: 
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
-    #path: $(projectFolder)
+    path: $(projectFolder)
   - checkout: modules
     # path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
 
-
-# - template: apply-function-app-infrastructure-template.yml
-#   parameters:
-#     backendAzureRmContainerName: 'pat-tf-storage'
-#     environmentServiceName: $(environmentServiceName)
-#     backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-#     backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-#     backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
-#     planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=$(organizationName)"'
-
   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
     parameters:
       name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/$(projectFolder)/Infrastructure/Terraform
       environmentServiceName: $(environmentServiceName)
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
@@ -66,7 +58,7 @@ jobs:
       backendAzureRmContainerName: 'pat-tf-storage'
       allowTelemetryCollection: true
       backendAzureRmKey: 'terraform.tfstate'
-      
+
   # - template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
   #   parameters:
   #     name: 'AccessTokenFunctionapp'
@@ -77,4 +69,3 @@ jobs:
   #     backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
   #     backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
   #     backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
-      
