@@ -57,7 +57,7 @@ jobs:
   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
     parameters:
       name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(projectFolder)/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
       environmentServiceName: $(environmentServiceName)
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
