@@ -27,7 +27,7 @@ jobs:
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
-    path: $(projectFolder)
+    path: ${{ variables.projectFolder }}
   - checkout: modules
     # path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
@@ -35,7 +35,7 @@ jobs:
   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
     parameters:
       name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(projectFolder)/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/${{ variables.projectFolder }}/Infrastructure/Terraform
       environmentServiceName: $(environmentServiceName)
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
