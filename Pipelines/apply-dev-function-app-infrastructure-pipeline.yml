@@ -7,7 +7,7 @@ resources:
       name: tumsky12/CorePipelineTemplates
       endpoint: GitHubConnection
       ref:  'refs/heads/feature/terraform-pipeline-changes'
-    - repository: modules
+    - repository: terraformModules
       type: github
       name: tumsky12/CoreTerraformModules
       endpoint: GitHubConnection
@@ -17,30 +17,43 @@ variables:
 - group: shared-variable-group
 
 jobs:
-- job: 
-  steps:
-  #- script: echo $(System.DefaultWorkingDirectory)
-  - checkout: self
-  - checkout: modules
-  #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
+- template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
+  parameters:
+    name: 'AccessTokenFunctionapp'
+    workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+    environmentServiceName: $(environmentServiceName)
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+    backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
+    backendAzureRmContainerName: 'pat-tf-storage'
+    backendAzureRmKey: 'terraform.tfstate'
+    planCommandOptions: '-var-file="Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
+# - job:
 
-  - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
-    parameters:
-      name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
-      environmentServiceName: $(environmentServiceName)
-      backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
-      backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
-      backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
-      backendAzureRmContainerName: 'pat-tf-storage'
-      backendAzureRmKey: 'terraform.tfstate'
 
-  - template: Templates\Steps\Terraform\terraform-plan-step.yml@templates
-    parameters:
-      name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
-      environmentServiceName: $(environmentServiceName)
-      planCommandOptions: '-var-file="Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
+#   steps:
+#   #- script: echo $(System.DefaultWorkingDirectory)
+#   - checkout: self
+#   - checkout: terraformModules
+#   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
+
+#   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
+#     parameters:
+#       name: 'AccessTokenFunctionapp'
+#       workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+#       environmentServiceName: $(environmentServiceName)
+#       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+#       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+#       backendAzureRmStorageAccountName:  $(devBackendAzureRmStorageAccountName)
+#       backendAzureRmContainerName: 'pat-tf-storage'
+#       backendAzureRmKey: 'terraform.tfstate'
+
+#   - template: Templates\Steps\Terraform\terraform-plan-step.yml@templates
+#     parameters:
+#       name: 'AccessTokenFunctionapp'
+#       workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+#       environmentServiceName: $(environmentServiceName)
+#       planCommandOptions: '-var-file="Variables/dev.tfvars" -var="devops_organization_name=$(organizationName)"'
 
   # - task: TerraformCLI@1
   #   displayName: 'Terraform Init'
