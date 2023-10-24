@@ -15,27 +15,19 @@ resources:
 
 variables:
 - group: shared-variable-group
-# - name: projectFolder
-#   value: RenewDevopsPAT
-- name: coreTerraformModulesFolder
-  value: CoreTerraformModules
-- name: projectFolder
-  value: RenewDevopsPAT   
 
 jobs:
 - job: 
   steps:
   #- script: echo $(System.DefaultWorkingDirectory)
   - checkout: self
-    path: $(projectFolder)
   - checkout: modules
-    path: $(coreTerraformModulesFolder)
   #- powershell: cd $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform; Get-ChildItem -Path ../../.. -recurse
 
   - template: Templates\Steps\Terraform\terraform-init-step.yml@templates
     parameters:
       name: 'AccessTokenFunctionapp'
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(projectFolder)/Infrastructure/Terraform
+      workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
       environmentServiceName: $(environmentServiceName)
       backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
       backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
