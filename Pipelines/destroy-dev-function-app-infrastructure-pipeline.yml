@@ -14,9 +14,6 @@ variables:
 jobs:
 - template: destroy-function-app-infrastructure-template.yml
   parameters:
-    backendAzureRmContainerName: 'pat-tf-storage'
-    environmentServiceName: ${environmentServiceName}
-    backendAzureRmResourceGroupName: ${devBackendAzureRmResourceGroupName}
-    backendAzureRmStorageAccountName: ${devBackendAzureRmStorageAccountName}
-    backendAzureRmKey: ${devBackendAzureRmKey}
-    planCommandOptions: '-var-file="Variables/dev.tfvars" -var "devops_organization_name=${organizationName}"'
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+    tfVarsFile: dev.tfvars

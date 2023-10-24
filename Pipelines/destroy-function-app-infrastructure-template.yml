@@ -1,19 +1,16 @@
 parameters:
-- name: backendAzureRmContainerName
-- name: environmentServiceName
 - name: backendAzureRmResourceGroupName
 - name: backendAzureRmStorageAccountName
-- name: backendAzureRmKey
-- name: planCommandOptions
+- name: tfVarsFile
 
 jobs:
 - template: PipelineTemplates/Jobs/Terraform/terraform-destroy-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
-    terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
-    backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
-    environmentServiceName: ${{ parameters.environmentServiceName }}
+    workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+    environmentServiceName: $(environmentServiceName)
     backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
     backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
-    backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
-    planCommandOptions: ${{ parameters.planCommandOptions }}
+    backendAzureRmContainerName: 'pat-tf-storage'
+    planCommandOptions: '-var-file="Variables/${{ parameters.tfVarsFile }}" -var="devops_organization_name=$(organizationName)"'
