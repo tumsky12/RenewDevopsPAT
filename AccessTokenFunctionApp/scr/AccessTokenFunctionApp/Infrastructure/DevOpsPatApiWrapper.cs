@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AccessTokenFunctionApp.Infrastructure.DevOpsPersonalAccessToken;
 using AccessTokenFunctionApp.Infrastructure.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace AccessTokenFunctionApp.Infrastructure;
 
@@ -25,11 +26,14 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
 
     private readonly string _patApiUriBase;
     private readonly HttpClient _httpClient;
-    public DevOpsPatApiWrapper(string organization, string token)
+    public DevOpsPatApiWrapper(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
+        _httpClient = httpClientFactory.CreateClient();
+        var azureAccessToken = DevOpsCredentialHelper.GetToken();
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", azureAccessToken);
+
+        var organization = configuration.GetValue<string>("DEVOPS_ORGANIZATION_NAME") ?? throw new Exception("DEVOPS_ORGANIZATION_NAME configuration variable not found");
         _patApiUriBase = $"{DevOpsUrl}/{organization}/{PatTokenApiPath}";
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
     public async Task<PersonalAccessTokenResults> CreateAsync(CreatePersonalAccessTokenOptions patTokenOptions, CancellationToken cancellationToken = default)

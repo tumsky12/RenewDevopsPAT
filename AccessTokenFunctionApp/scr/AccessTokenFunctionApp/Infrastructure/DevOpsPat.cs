@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AccessTokenFunctionApp.Infrastructure.DevOpsPersonalAccessToken;
@@ -13,11 +12,9 @@ public class DevOpsPat : IDevOpsPat
     private const int DaysToExpiry = 30;
 
     private readonly IDevOpsPatApiWrapper _devOpsPatApiWrapper;
-    public DevOpsPat(IConfiguration configuration)
+    public DevOpsPat(IDevOpsPatApiWrapper devOpsPatApiWrapper)
     {
-        var azureAccessToken = DevOpsCredentialHelper.GetToken();
-        var organizationName = configuration.GetValue<string>("DEVOPS_ORGANIZATION_NAME") ?? throw new Exception("DEVOPS_ORGANIZATION_NAME configuration variable not found");
-        _devOpsPatApiWrapper = new DevOpsPatApiWrapper(organizationName, azureAccessToken);
+        _devOpsPatApiWrapper = devOpsPatApiWrapper;
     }
 
     public async Task<string?> RenewPat(CancellationToken cancellationToken = default)
