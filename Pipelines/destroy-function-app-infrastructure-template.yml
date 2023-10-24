@@ -4,7 +4,7 @@ parameters:
 - name: tfVarsFile
 
 jobs:
-- template: PipelineTemplates/Jobs/Terraform/terraform-destroy-job.yml@templates
+- template: Templates/Jobs/Terraform/terraform-destroy-job.yml@templates
   parameters:
     name: 'AccessTokenFunctionapp'
     workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
