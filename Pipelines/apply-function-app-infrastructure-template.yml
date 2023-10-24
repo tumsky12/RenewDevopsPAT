@@ -1,6 +1,16 @@
-stages:
-- template: PipelineTemplates/terraform-apply-template.yml@templates
+parameters:
+- name: backendAzureRmResourceGroupName
+- name: backendAzureRmStorageAccountName
+- name: tfVarsFile
+
+jobs:
+- template: Templates/Jobs/Terraform/terraform-apply-job.yml@templates
   parameters:
-    name: 'AccessTokenFunctionapp'
-    terraformWorkingDir: '$(System.DefaultWorkingDirectory)/infrastructure/Terraform'
+    name: 'AccessTokenFunctionApp'
+    workingDirectory: $(System.DefaultWorkingDirectory)/RenewDevopsPAT/Infrastructure/Terraform
+    environmentServiceName: $(environmentServiceName)
+    backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+    backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+    backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
     backendAzureRmContainerName: 'pat-tf-storage'
+    planCommandOptions: '-var-file="Variables/${{ parameters.tfVarsFile }}" -var="devops_organization_name=$(organizationName)"'

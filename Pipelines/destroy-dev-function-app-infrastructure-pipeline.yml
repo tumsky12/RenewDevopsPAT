@@ -1,0 +1,22 @@
+trigger: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: tumsky12/CorePipelineTemplates
+      endpoint: GitHubConnection
+    - repository: terraformModules
+      type: github
+      name: tumsky12/CoreTerraformModules
+      endpoint: GitHubConnection
+
+variables:
+- group: shared-variable-group
+
+jobs:
+- template: destroy-function-app-infrastructure-template.yml
+  parameters:
+    backendAzureRmResourceGroupName: $(devBackendAzureRmResourceGroupName)
+    backendAzureRmStorageAccountName: $(devBackendAzureRmStorageAccountName)
+    tfVarsFile: dev.tfvars
