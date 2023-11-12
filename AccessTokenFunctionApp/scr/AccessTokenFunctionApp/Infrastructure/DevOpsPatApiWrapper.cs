@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AccessTokenFunctionApp.Infrastructure.DevOpsPersonalAccessToken;
 using AccessTokenFunctionApp.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace AccessTokenFunctionApp.Infrastructure;
 
@@ -26,60 +28,67 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
 
     private readonly string _patApiUriBase;
     private readonly HttpClient _httpClient;
-    public DevOpsPatApiWrapper(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    private readonly ILogger<DevOpsPatApiWrapper> _logger;
+
+    public DevOpsPatApiWrapper(string bearerToken, IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<DevOpsPatApiWrapper> logger)
     {
         _httpClient = httpClientFactory.CreateClient();
-        var azureAccessToken = DevOpsCredentialHelper.GetToken();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", azureAccessToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
         var organization = configuration.GetValue<string>("DEVOPS_ORGANIZATION_NAME") ?? throw new Exception("DEVOPS_ORGANIZATION_NAME configuration variable not found");
         _patApiUriBase = $"{DevOpsUrl}/{organization}/{PatTokenApiPath}";
+        
+        _logger = logger;
     }
 
     public async Task<PersonalAccessTokenResults> CreateAsync(CreatePersonalAccessTokenOptions patTokenOptions, CancellationToken cancellationToken = default)
     {
         var requestUri = $"{_patApiUriBase}?api-version={ApiVersion}";
-        var optionsJson = JsonSerializer.Serialize(patTokenOptions, _requestSerializerOptions);
-        var optionsContent = new StringContent(optionsJson, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(requestUri, optionsContent, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-
-        var patToken = JsonSerializer.Deserialize<PersonalAccessTokenResults>(responseBody, _responseDeserializerOptions);
-        return patToken ?? throw new InvalidOperationException();
+        return await PostRequestAsync<PersonalAccessTokenResults, CreatePersonalAccessTokenOptions>(patTokenOptions, requestUri, cancellationToken);
     }
 
     public async Task<PersonalAccessTokenResults> GetAsync(string authorizationId, CancellationToken cancellationToken = default)
     {
         var requestUri = $"{_patApiUriBase}?authorizationId={authorizationId}&api-version={ApiVersion}";
-        var response = await GetResponseAsync(requestUri, cancellationToken);
-        var patToken = JsonSerializer.Deserialize<PersonalAccessTokenResults>(response, _responseDeserializerOptions);
-        return patToken ?? throw new InvalidOperationException();
+        return await GetRequestAsync<PersonalAccessTokenResults>(requestUri, cancellationToken);
     }
 
     public async Task<PagedPersonalAccessTokens> ListAsync(CancellationToken cancellationToken = default)
     {
         var requestUri = $"{_patApiUriBase}?api-version={ApiVersion}";
-        var response = await GetResponseAsync(requestUri, cancellationToken);
-        var pagedPatTokens = JsonSerializer.Deserialize<PagedPersonalAccessTokens>(response, _responseDeserializerOptions);
-        return pagedPatTokens ?? throw new InvalidOperationException();
+        return await GetRequestAsync<PagedPersonalAccessTokens>(requestUri, cancellationToken);
     }
 
-    public async Task RevokeAsync(string authorizationId, CancellationToken cancellationToken = default)
+    public Task RevokeAsync(string authorizationId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PersonalAccessTokenResults> UpdateAsync(UpdatePersonalAccessTokenOptions patTokenOptions, CancellationToken cancellationToken = default)
+    public Task<PersonalAccessTokenResults> UpdateAsync(UpdatePersonalAccessTokenOptions patTokenOptions, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    private async Task<string> GetResponseAsync(string requestUri, CancellationToken cancellationToken = default)
+    private async Task<TResponse> GetRequestAsync<TResponse>(string requestUri, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.GetAsync(requestUri, cancellationToken);
         response.EnsureSuccessStatusCode();
+        return await DeserializeResponse<TResponse>(response, cancellationToken);
+    }
+
+    private async Task<TResponse> PostRequestAsync<TResponse, TOptions>(TOptions options, string requestUri, CancellationToken cancellationToken = default)
+    {
+        var optionsJson = JsonSerializer.Serialize(options, _requestSerializerOptions);
+        var optionsContent = new StringContent(optionsJson, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync(requestUri, optionsContent, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await DeserializeResponse<TResponse>(response, cancellationToken);
+    }
+
+    private async Task<T> DeserializeResponse<T>(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-        return responseBody;
+        var deserializedResponse = JsonSerializer.Deserialize<T>(responseBody, _responseDeserializerOptions);
+        return deserializedResponse ?? throw new InvalidOperationException();
     }
 }

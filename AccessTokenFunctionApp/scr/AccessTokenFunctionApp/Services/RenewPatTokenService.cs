@@ -7,20 +7,20 @@ namespace AccessTokenFunctionApp.Services;
 public class RenewPatTokenService : IRenewPatTokenService
 {
     private readonly IPatKeyVault _patKeyVault;
-    private readonly IDevOpsPat _devOpsPat;
+    private readonly IDevOpsPatRenewer _devOpsPatRenewer;
     private readonly ILogger<RenewPatTokenService> _logger;
     public RenewPatTokenService(IPatKeyVault patKeyVault,
-        IDevOpsPat devOpsPat,
+        IDevOpsPatRenewer devOpsPatRenewer,
         ILogger<RenewPatTokenService> logger)
     {
         _patKeyVault = patKeyVault;
-        _devOpsPat = devOpsPat;
+        _devOpsPatRenewer = devOpsPatRenewer;
         _logger = logger;
     }
 
     public async Task<bool> RenewPatToken()
     {
-        var newPersonalAccessToken = await _devOpsPat.RenewPat();
+        var newPersonalAccessToken = await _devOpsPatRenewer.Renew();
         if (newPersonalAccessToken == null)
         {
             _logger.LogError("Failed to renew pat");

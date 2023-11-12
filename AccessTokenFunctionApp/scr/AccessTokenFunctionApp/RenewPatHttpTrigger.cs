@@ -20,8 +20,7 @@ public class RenewPatHttpTrigger
     }
 
     [FunctionName("RenewPatRequestTrigger")]
-    public async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req)
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req)
     {
         _logger.LogInformation("RenewPatFunction executed via http request");
 

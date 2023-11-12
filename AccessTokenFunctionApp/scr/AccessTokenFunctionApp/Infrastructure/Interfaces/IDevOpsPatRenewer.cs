@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AccessTokenFunctionApp.Infrastructure.Interfaces;
 
-public interface IDevOpsPat
+public interface IDevOpsPatRenewer
 {
-    Task<string?> RenewPat(CancellationToken cancellationToken = default);
+    Task<string?> Renew(CancellationToken cancellationToken = default);
 }
