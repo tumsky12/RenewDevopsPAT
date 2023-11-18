@@ -40,6 +40,7 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
         _patApiUriBase = $"{DevOpsUrl}/{organization}/{PatTokenApiPath}";
         
         _logger = logger;
+        _logger.LogInformation("bearerToken {bearerToken}", bearerToken);
     }
 
     public async Task<PersonalAccessTokenResults> CreateAsync(CreatePersonalAccessTokenOptions patTokenOptions, CancellationToken cancellationToken = default)
