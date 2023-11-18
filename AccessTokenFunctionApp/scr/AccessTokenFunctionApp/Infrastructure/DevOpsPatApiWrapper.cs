@@ -85,8 +85,9 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
         _logger.LogInformation("requestUri {requestUri}", requestUri);
         _logger.LogInformation("optionsJson {optionsJson}", optionsJson);
         var response = await _httpClient.PostAsync(requestUri, optionsContent, cancellationToken);
-        _logger.LogInformation("response {response}", (await response.Content.ReadAsStringAsync()));
-        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync(cancellationToken);
+        _logger.LogInformation("content {content}", content);
+        //response.EnsureSuccessStatusCode();
         return await DeserializeResponse<TResponse>(response, cancellationToken);
     }
 
