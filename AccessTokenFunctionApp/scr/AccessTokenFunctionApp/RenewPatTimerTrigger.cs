@@ -16,7 +16,7 @@ public class RenewPatTimerTrigger
     }
 
     [FunctionName("RenewPatTimerTrigger")]
-    public async Task Run([TimerTrigger("* * * */10 * *")] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("* */1 * * * *")] TimerInfo myTimer)
     {
         _logger.LogInformation("RenewPatFunction executed via trigger timer. Is past due {IsPastDue}", myTimer.IsPastDue);
         await _renewPatTokenService.RenewPatToken();
