@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using AccessTokenFunctionApp.Infrastructure.DevOpsPersonalAccessToken;
 using AccessTokenFunctionApp.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
@@ -80,7 +81,10 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
     {
         var optionsJson = JsonSerializer.Serialize(options, _requestSerializerOptions);
         var optionsContent = new StringContent(optionsJson, Encoding.UTF8, "application/json");
+        _logger.LogInformation("requestUri {requestUri}", requestUri);
+        _logger.LogInformation("optionsJson {optionsJson}", optionsJson);
         var response = await _httpClient.PostAsync(requestUri, optionsContent, cancellationToken);
+        _logger.LogInformation("response {response}", (await response.Content.ReadAsStringAsync()));
         response.EnsureSuccessStatusCode();
         return await DeserializeResponse<TResponse>(response, cancellationToken);
     }
