@@ -34,7 +34,7 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
     public DevOpsPatApiWrapper(string bearerToken, IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<DevOpsPatApiWrapper> logger)
     {
         _httpClient = httpClientFactory.CreateClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSIsImtpZCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSJ9.eyJhdWQiOiI0OTliODRhYy0xMzIxLTQyN2YtYWExNy0yNjdjYTY5NzU3OTgiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9hNTYzOGNkNC1mZDI1LTQwZjEtOTNlZC01ZGViZWYwNjhhYjkvIiwiaWF0IjoxNzAwMzI0MTQ1LCJuYmYiOjE3MDAzMjQxNDUsImV4cCI6MTcwMDMyODUwNCwiYWNyIjoiMSIsImFpbyI6IkFZUUFlLzhWQUFBQWdaYjFzNjZmRFhLalYwWWN0eUxUc1c0WFlmVVo3Y2k2WkRybWVRUnQ2QjVVdEFoUTlMejhxQXRScjdFdDA0dHZhNERQUUtkamE0VEhSUFRhSEd3b2Y1K1lKVStyeEFVdTFaWVBENnJwSjRkNDkvM1NzbDlzVVhpc1Z6eFI1VkVraENGdU1RcUoyandSVUlQWVdjbjRpUVVnemtMNzBoUzBjZzV6aVd1ekw4UT0iLCJhbHRzZWNpZCI6IjE6bGl2ZS5jb206MDAwMzdGRkU0N0RFQkQwNCIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiIwNGIwNzc5NS04ZGRiLTQ2MWEtYmJlZS0wMmY5ZTFiZjdiNDYiLCJhcHBpZGFjciI6IjAiLCJlbWFpbCI6ImF0dW10dW0xMkBnbWFpbC5jb20iLCJmYW1pbHlfbmFtZSI6IkciLCJnaXZlbl9uYW1lIjoiQXJraXVzIiwiaWRwIjoibGl2ZS5jb20iLCJpcGFkZHIiOiI4Ni4xNDkuMTI3LjQwIiwibmFtZSI6IkFya2l1cyIsIm9pZCI6IjIzOTIzNTNhLTZkNmYtNDNiNC1iNDE1LWEwYWE5OGMzOTI5OSIsInB1aWQiOiIxMDAzMjAwMkE3NDg2NzYwIiwicmgiOiIwLkFVNEExSXhqcFNYOThVQ1Q3VjNyN3dhS3VheUVtMGtoRTM5Q3FoY21mS2FYVjVpREFDTS4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJaN1gtMVl6V0hBUmJFNzFSVEVRU1cwazcwTmYxX0FpRWFzTEVmSTRmQWVNIiwidGlkIjoiYTU2MzhjZDQtZmQyNS00MGYxLTkzZWQtNWRlYmVmMDY4YWI5IiwidW5pcXVlX25hbWUiOiJsaXZlLmNvbSNhdHVtdHVtMTJAZ21haWwuY29tIiwidXRpIjoibi02Qk1lTDljVXFNMmhJWW9qcVRBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiNjJlOTAzOTQtNjlmNS00MjM3LTkxOTAtMDEyMTc3MTQ1ZTEwIiwiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.OgtkUG65HCfeW4SdwWdH6mJCFy4T_1f3VEO0Aj1SBwUCwyzsJZFEtf_CvQMj9aEGAuWLHbBANDkX8dTHOPt0dusHqFt2dJhlvIw6L7TtJO2w5ddbnC11V9W98cHeD7pRLF9J5N7vaaOUPZI9NBl0uHoPcr4G7xQhspdC1J1oYqw0tkGFlVK_quKGf3NOfdnRrU8rTqdHEA3xgNQN9pF68MEO2f-ZluFSb2xO24lgE4RK4xHdEhCmOcgSUJjHNp5bmCU1Y9I2REo5NkAb8S-__sZNAfFRX2X8vatjzf-_Nlm8YLIVTlokHOdyBGAfMcsI1NeERSGVUEKcrozRsg7jzA");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
         var organization = configuration.GetValue<string>("DEVOPS_ORGANIZATION_NAME") ?? throw new Exception("DEVOPS_ORGANIZATION_NAME configuration variable not found");
         _patApiUriBase = $"{DevOpsUrl}/{organization}/{PatTokenApiPath}";
@@ -86,7 +86,7 @@ public class DevOpsPatApiWrapper : IDevOpsPatApiWrapper
         _logger.LogInformation("optionsJson {optionsJson}", optionsJson);
         var response = await _httpClient.PostAsync(requestUri, optionsContent, cancellationToken);
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
-        _logger.LogInformation("content {content}", content);
+        //_logger.LogInformation("content {content}", content);
         //response.EnsureSuccessStatusCode();
         return await DeserializeResponse<TResponse>(response, cancellationToken);
     }
